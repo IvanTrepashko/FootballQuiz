@@ -13,8 +13,8 @@ namespace FootballQuiz.API.Controllers
     [ApiController]
     public class HomeController : ControllerBase
     {
-        private IHomeService homeService;
-        private ILogger<HomeController> logger;
+        private readonly IHomeService homeService;
+        private readonly ILogger<HomeController> logger;
 
         public HomeController(IHomeService homeService, ILogger<HomeController> logger)
         {

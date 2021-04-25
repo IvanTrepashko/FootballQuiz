@@ -6,7 +6,7 @@ namespace Services
 {
     public class HomeService : IHomeService
     {
-        private IHomeRepository homeRepository;
+        private readonly IHomeRepository homeRepository;
 
         public HomeService(IHomeRepository homeRepository)
         {
