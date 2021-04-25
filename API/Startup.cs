@@ -38,6 +38,13 @@ namespace FootballQuiz.API
 
             services.AddTransient<IHomeService, HomeService>();
             services.AddTransient<IHomeRepository, HomeRepository>();
+            services.AddCors(policy =>
+            {
+                policy.AddPolicy("_myAllowSpecificOrigins", builder =>
+                 builder.AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader());
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -53,6 +60,8 @@ namespace FootballQuiz.API
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors("_myAllowSpecificOrigins");
 
             app.UseAuthorization();
 

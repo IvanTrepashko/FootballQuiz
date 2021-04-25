@@ -1,0 +1,24 @@
+﻿@page "/counter"
+
+<h1>Counter</h1>
+
+<p>Current count: @currentCount</p>
+<p>Quizes: @quizzes</p>
+
+<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+<button class="btn btn-primary" @onclick="LoadQuizes">Load Quizzes</button>
+@code {
+    private int currentCount = 0;
+    private string quizzes;
+
+    private void IncrementCount()
+    {
+        currentCount++;
+    }
+
+    private async void LoadQuizes()
+    {
+        HttpClient client = new HttpClient();
+        quizzes = await client.GetStringAsync("https://localhost:44333/api/Home");
+    }
+}
