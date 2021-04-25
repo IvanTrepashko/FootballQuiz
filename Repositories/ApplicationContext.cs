@@ -10,6 +10,16 @@ namespace Repositories
 
         public DbSet<Quiz> Quizes { get; set; }
 
+        public DbSet<AnsweredQuestion> AnsweredQuestions { get; set; }
+
+        public DbSet<AnsweredQuiz> AnsweredQuizes { get; set; }
+
+        public DbSet<QuizAnswer> QuizAnswers { get; set; }
+
+        public DbSet<QuizQuestion> QuizQuestions { get; set; }
+
+        public DbSet<User> Users { get; set; }
+
         public ApplicationContext()
         {
             Database.EnsureCreated();

@@ -7,17 +7,15 @@ using System.Threading.Tasks;
 
 namespace RepositoryContracts.Models
 {
-    public class Quiz
+    public class QuizQuestion
     {
         [Key]
-        public Guid QuizID { get; set; }
+        public Guid QuizQuestionID { get; set; }
 
         public User Creator { get; set; }
 
-        public string Topic { get; set; }
+        public Quiz Quiz { get; set; }
 
-        public DateTime CreationDate { get; set; }
-        
-        public string Tags { get; set; }
+        public string Question { get; set; }
     }
 }

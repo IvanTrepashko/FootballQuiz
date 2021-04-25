@@ -1,5 +1,7 @@
-﻿using RepositoryContracts;
+﻿using Microsoft.EntityFrameworkCore;
+using RepositoryContracts;
 using System.Linq;
+using System.Text.Json;
 
 namespace Repositories
 {
@@ -14,7 +16,8 @@ namespace Repositories
 
         public string GetHello()
         {
-            return this.context.Quizes.FirstOrDefault()?.Topic;
+            var quizzes = this.context.Quizes.Include(x => x.Creator);
+            return JsonSerializer.Serialize(quizzes);
         }
     }
 }
