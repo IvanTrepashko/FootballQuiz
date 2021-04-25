@@ -3,15 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30711.63
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FootballQuiz.API", "FootballQuiz.API\FootballQuiz.API.csproj", "{E7AF602E-F90A-466B-A9E5-81C310F3CFD8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FootballQuiz.API", "API\FootballQuiz.API.csproj", "{E7AF602E-F90A-466B-A9E5-81C310F3CFD8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Services", "FootballQuiz.Services\Services.csproj", "{D88E0BA0-9C19-4358-9E74-3089BA9DA8FE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Services", "Services\Services.csproj", "{D88E0BA0-9C19-4358-9E74-3089BA9DA8FE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceContracts", "FootballQuiz.ServicesInterfaces\ServiceContracts.csproj", "{8C67CC88-E3C6-4B0F-9D9B-366C932E95B7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceContracts", "ServiceContracts\ServiceContracts.csproj", "{8C67CC88-E3C6-4B0F-9D9B-366C932E95B7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RepositoryContracts", "FootballQuiz.RepositoriesInterfaces\RepositoryContracts.csproj", "{57BEFB8D-64A2-48FC-93DB-47D8808A9AEF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RepositoryContracts", "RepositoryContracts\RepositoryContracts.csproj", "{57BEFB8D-64A2-48FC-93DB-47D8808A9AEF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Repositories", "FootballQuiz.Repositories\Repositories.csproj", "{BE98DBD3-FDC5-42E9-BA09-F6E4C85C04DC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Repositories", "Repositories\Repositories.csproj", "{BE98DBD3-FDC5-42E9-BA09-F6E4C85C04DC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
