@@ -1,7 +1,79 @@
 ﻿@page "/quizzes"
 
+@using Models
+
+@inject AuthenticationStateProvider authenticationStateProvider
+@inject HttpClient client
+@inject NavigationManager navigationManager
+
 <h3>Викторины</h3>
 
-@code {
+<li class="nav-item px-3">
+    <NavLink class="nav-link" href="addquiz" Match="NavLinkMatch.All">
+        Добавить викторину
+    </NavLink>
+    @if (QuizModels is null)
+    {
+        <p>Загрузка...</p>
+    }
+    else
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Название</th>
+                    <th>Тема</th>
+                    <th>Описание</th>
+                    <th>Теги</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var quiz in QuizModels)
+                {
+                    <tr>
+                        <td>@quiz.Name</td>
+                        <td>@quiz.Topic</td>
+                        <td>@quiz.Description</td>
+                        <td>@quiz.Tags</td>
+                        <td>
+                            <button class="btn btn-danger" @onclick="() => DeleteQuiz(quiz)">Удалить</button>
+                        </td>
+                        <td>
+                            <button class="btn btn-info" @onclick="() => UpdateQuiz(quiz)">Редактировать</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</li>
 
+@code
+{
+    List<QuizModel> QuizModels;
+
+    public void DeleteQuiz(QuizModel quiz)
+    {
+        client.DeleteAsync("https://localhost:44333/api/quiz/" + quiz.QuizID);
+        QuizModels.Remove(quiz);
+    }
+
+    public void UpdateQuiz(QuizModel quiz)
+    {
+
+    }
+
+    protected async override Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        var authState = await authenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        string userId = user.Claims.Where(x => x.Type.Equals("sub")).FirstOrDefault().Value;
+
+        QuizModels = await client.GetFromJsonAsync<List<QuizModel>>(@"https://localhost:44333/api/quiz?userId=" + userId);
+    }
 }

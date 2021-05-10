@@ -4,7 +4,7 @@ using RepositoryContracts.Models;
 
 namespace Repositories
 {
-    internal class ApplicationContext : DbContext
+    public class ApplicationContext : DbContext
     {
         private const string ConnectionString = "SqlConnectionString";
 

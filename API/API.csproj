@@ -9,6 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="..\.editorconfig" Link=".editorconfig" />
     <None Include="appsettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

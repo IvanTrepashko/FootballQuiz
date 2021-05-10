@@ -1,7 +1,21 @@
 ﻿@page "/authentication/{action}"
+
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@using Models
+
+@inject HttpClient client
+
 <RemoteAuthenticatorView Action="@Action" />
 
 @code{
-    [Parameter] public string Action { get; set; }
+    [Parameter] 
+    public string Action { get; set; }
+
+    protected override void OnParametersSet()
+    {
+        if (string.Equals(Action, "login", StringComparison.OrdinalIgnoreCase))
+        {
+
+        }
+    }
 }

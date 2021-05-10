@@ -1,0 +1,61 @@
+﻿@page "/addquiz"
+
+@using UI.Models;
+
+@inject HttpClient client
+@inject NavigationManager navigationManager
+@inject AuthenticationStateProvider authenticationStateProvider
+
+<h3>Новая викторина</h3>
+
+<EditForm Model="@quizModel" OnValidSubmit="@HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <p>
+        <label>
+            Имя викторины:
+            <InputText @bind-Value="quizModel.Name" />
+        </label>
+    </p>
+    <p>
+        <label>
+            Тема викторины
+            <InputText @bind-Value="quizModel.Topic" />
+        </label>
+    </p>
+    <p>
+        <label>
+            Краткое описание викторины
+            <InputTextArea @bind-Value="quizModel.Description" />
+        </label>
+    </p>
+    <p>
+        <label>
+            Теги(опционально)
+            <InputTextArea @bind-Value="quizModel.Tags" />
+        </label>
+    </p>
+    <button type="submit">Создать</button>
+</EditForm>
+
+
+@code {
+    private QuizModel quizModel = new QuizModel();
+
+    private async void HandleValidSubmit()
+    {
+        var authState = await authenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        var userId = user.Claims.Where(x => x.Type.Equals("sub")).First().Value;
+
+        quizModel.CreationDate = DateTime.Now;
+        quizModel.UserID = userId;
+        quizModel.QuizID = Guid.NewGuid();
+
+        await client.PostAsJsonAsync<QuizModel>(@"https://localhost:44333/api/quiz", quizModel);
+
+
+        navigationManager.NavigateTo($"/addanswer/{quizModel.QuizID.ToString()}");
+    }
+}

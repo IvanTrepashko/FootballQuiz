@@ -13,7 +13,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RepositoryContracts", "Repo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Repositories", "Repositories\Repositories.csproj", "{BE98DBD3-FDC5-42E9-BA09-F6E4C85C04DC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UI", "UI\UI.csproj", "{DDFA4BF3-179B-455C-BEA2-1CBA157DA623}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UI", "UI\UI.csproj", "{DDFA4BF3-179B-455C-BEA2-1CBA157DA623}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0D7EE6CF-0A30-4517-AF46-B72B4C7C79A3}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

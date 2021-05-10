@@ -36,8 +36,9 @@ namespace FootballQuiz.API
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "FootballQuiz.API", Version = "v1" });
             });
 
-            services.AddTransient<IHomeService, HomeService>();
-            services.AddTransient<IHomeRepository, HomeRepository>();
+            AddCustomServices(services);
+
+            services.AddLogging();
             services.AddCors(policy =>
             {
                 policy.AddPolicy("_myAllowSpecificOrigins", builder =>
@@ -45,6 +46,17 @@ namespace FootballQuiz.API
                         .AllowAnyMethod()
                         .AllowAnyHeader());
             });
+        }
+
+        public void AddCustomServices(IServiceCollection services)
+        {
+            services.AddTransient<IQuestionRepository, QuestionRepository>();
+            services.AddTransient<IQuizService, QuizService>();
+            services.AddTransient<IQuizRepository, QuizRepository>();
+            services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient<ApplicationContext>();
+            services.AddScoped<ModelMapper>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

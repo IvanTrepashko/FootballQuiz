@@ -1,0 +1,101 @@
+﻿@page "/addanswer/{QuizID}"
+
+@using Models
+
+@inject HttpClient client
+@inject AuthenticationStateProvider authenticationStateProvider
+
+<h3>Добавьте ответы для викторины</h3>
+
+<EditForm Model="@QuestionModel" OnValidSubmit="@HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <p>
+        <label>
+            Имя викторины:
+            <InputText @bind-Value="QuestionModel.Question" />
+        </label>
+    </p>
+    <p>
+        <label>
+            Ответ №1
+            <InputText @bind-Value="AnswerModel1.AnswerText" />
+            <InputCheckbox @bind-Value="AnswerModel1.IsCorrect" />
+        </label>
+        <label>
+            Ответ №2
+            <InputText @bind-Value="AnswerModel2.AnswerText" />
+            <InputCheckbox @bind-Value="AnswerModel2.IsCorrect" />
+        </label>
+        <label>
+            Ответ №3
+            <InputText @bind-Value="AnswerModel3.AnswerText" />
+            <InputCheckbox @bind-Value="AnswerModel3.IsCorrect" />
+        </label>
+    </p>
+    <button type="submit">Добавить вопрос</button>
+</EditForm>
+
+<button type="submit" @onclick="SubmitQuiz">Сохранить викторину</button>
+
+
+@code
+{
+    [Parameter]
+    public string QuizID { get; set; }
+
+    List<QuestionModel> Questions { get; set; }
+    QuestionModel QuestionModel { get; set; }
+    AnswerModel AnswerModel1 { get; set; }
+    AnswerModel AnswerModel2 { get; set; }
+    AnswerModel AnswerModel3 { get; set; }
+
+    string UserID { get; set; }
+
+    protected async override Task OnInitializedAsync()
+    {
+        Questions = new List<QuestionModel>();
+        QuestionModel = new QuestionModel();
+        AnswerModel1 = new AnswerModel();
+        AnswerModel2 = new AnswerModel();
+        AnswerModel3 = new AnswerModel();
+
+        base.OnInitialized();
+        QuestionModel.AnswerModels.Add(AnswerModel1);
+        QuestionModel.AnswerModels.Add(AnswerModel2);
+        QuestionModel.AnswerModels.Add(AnswerModel3);
+
+        var authState = await authenticationStateProvider.GetAuthenticationStateAsync();
+
+        UserID = authState.User.Claims.Where(x => x.Type.Equals("sub")).First().Value;
+    }
+
+    public void HandleValidSubmit()
+    {
+        if (this.QuestionModel.AnswerModels.Count(x => x.IsCorrect) != 1)
+        {
+            return;
+        }
+
+        this.QuestionModel.CreationDate = DateTime.Now;
+
+        this.QuestionModel.UserID = UserID;
+        QuestionModel.QuizID = new Guid(this.QuizID);
+        Questions.Add(this.QuestionModel);
+
+        AnswerModel1 = new AnswerModel();
+        AnswerModel2 = new AnswerModel();
+        AnswerModel3 = new AnswerModel();
+
+        QuestionModel = new QuestionModel();
+
+        QuestionModel.AnswerModels.Add(AnswerModel1);
+        QuestionModel.AnswerModels.Add(AnswerModel2);
+        QuestionModel.AnswerModels.Add(AnswerModel3); 
+    }
+
+    public void SubmitQuiz()
+    {
+        client.PostAsJsonAsync<List<QuestionModel>>(@"https://localhost:44333/api/quiz/answers", Questions);
+    }
+}
