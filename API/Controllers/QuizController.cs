@@ -70,5 +70,12 @@ namespace API.Controllers
         {
             this.quizService.DeleteAsync(id);
         }
+
+        [HttpGet]
+        [Route("random")]
+        public void GetRandomQuiz()
+        {
+
+        }
     }
 }

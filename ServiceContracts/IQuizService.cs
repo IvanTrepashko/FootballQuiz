@@ -20,5 +20,9 @@ namespace ServiceContracts
         Task UpdateAsync(QuizModel value);
         
         QuizModel GetById(Guid id);
+
+        AnsweredQuizModel GetRandom();
+
+        void AddAnsweredAsync(AnsweredQuizModel value);
     }
 }

@@ -1,7 +1,61 @@
 ﻿@page "/randomquiz" 
 
+@using Models 
+
+@inject HttpClient client 
+@inject AuthenticationStateProvider auth
+
 <h3>Случайная викторина</h3>
 
-@code {
+<div>
+    @if (AnsweredQuizModel is null)
+    {
+        <p>Загрузка...</p>
+    }
+    else
+    {
+        <h3>@AnsweredQuizModel.QuizModel.Name</h3>
+        <EditForm Model="AnsweredQuizModel" OnValidSubmit="HandleValidSubmit">
+            @foreach (var question in AnsweredQuizModel.AnsweredQuestionModels)
+            {
+                <div>
+                    <p>Вопрос: @question.QuestionModel.Question</p>
+                    <div>
+                        <InputRadioGroup Name="@question.QuestionModel.Question" @bind-Value="@question.AnswerModelID">
+                            @foreach (var answer in question.QuestionModel.AnswerModels)
+                            {
+                                <InputRadio Name="@question.QuestionModel.Question" Value="answer.AnswerModelID" />
+                                       @answer.AnswerText
+                                <br/>
+                            }
+                        </InputRadioGroup>
+                    </div>
+                </div>
+            }
+            <button type="submit">Ответить</button>
+        </EditForm>
+    }
+</div>
 
+@code
+{
+    public AnsweredQuizModel AnsweredQuizModel { get; set; }
+
+    public async void HandleValidSubmit()
+    {
+        await client.PostAsJsonAsync("https://localhost:44333/api/QuizAnswer", AnsweredQuizModel);
+    }
+
+    protected async override Task OnInitializedAsync()
+    {
+        AnsweredQuizModel = await client.GetFromJsonAsync<AnsweredQuizModel>("https://localhost:44333/api/QuizAnswer/random");
+
+        var authState = await auth.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        if (user.Identity.IsAuthenticated)
+        {
+            AnsweredQuizModel.UserID = user.Claims.Where(x => x.Type.Equals("sub")).First().Value;
+        }
+    }
 }

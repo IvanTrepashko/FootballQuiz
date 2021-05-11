@@ -50,9 +50,9 @@
 
     List<QuestionModel> Questions { get; set; }
     QuestionModel QuestionModel { get; set; }
-    AnswerModel AnswerModel1 { get; set; }
-    AnswerModel AnswerModel2 { get; set; }
-    AnswerModel AnswerModel3 { get; set; }
+    QuizAnswerModel AnswerModel1 { get; set; }
+    QuizAnswerModel AnswerModel2 { get; set; }
+    QuizAnswerModel AnswerModel3 { get; set; }
 
     string UserID { get; set; }
 
@@ -60,9 +60,9 @@
     {
         Questions = new List<QuestionModel>();
         QuestionModel = new QuestionModel();
-        AnswerModel1 = new AnswerModel();
-        AnswerModel2 = new AnswerModel();
-        AnswerModel3 = new AnswerModel();
+        AnswerModel1 = new QuizAnswerModel();
+        AnswerModel2 = new QuizAnswerModel();
+        AnswerModel3 = new QuizAnswerModel();
 
         base.OnInitialized();
         QuestionModel.AnswerModels.Add(AnswerModel1);
@@ -87,9 +87,9 @@
         QuestionModel.QuizID = new Guid(this.QuizID);
         Questions.Add(this.QuestionModel);
 
-        AnswerModel1 = new AnswerModel();
-        AnswerModel2 = new AnswerModel();
-        AnswerModel3 = new AnswerModel();
+        AnswerModel1 = new QuizAnswerModel();
+        AnswerModel2 = new QuizAnswerModel();
+        AnswerModel3 = new QuizAnswerModel();
 
         QuestionModel = new QuestionModel();
 

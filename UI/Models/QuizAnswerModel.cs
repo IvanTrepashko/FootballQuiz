@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace ServiceContracts.Models
+namespace UI.Models
 {
-    public class AnswerModel
+    public class QuizAnswerModel
     {
         public Guid AnswerModelID { get; set; }
 

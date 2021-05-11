@@ -49,13 +49,44 @@ namespace Services
             return quiz;
         }
 
+        public async Task<List<AnsweredQuestion>> MapModelAnswersAsync(AnsweredQuizModel value, AnsweredQuiz quiz)
+        {
+            List<AnsweredQuestion> answeredQuestions = new List<AnsweredQuestion>();
+
+            foreach (var answeredQuestionModel in value.AnsweredQuestionModels)
+            {
+                var answeredQuestion = new AnsweredQuestion();
+                answeredQuestion.AnsweredQuestionId = Guid.NewGuid();
+                answeredQuestion.Quiz = quiz;
+                answeredQuestion.User = await this.userRepository.GetByIDAsync(value.UserID);
+                answeredQuestion.QuizAnswer = MapAnswerModel(answeredQuestionModel.Answer);
+                answeredQuestion.Question = await MapQuestionModelAsync(answeredQuestionModel.QuestionModel);
+                answeredQuestions.Add(answeredQuestion);
+            }
+
+            return answeredQuestions;
+        }
+
+        public async Task<AnsweredQuiz> MapAnsweredQuizModelAsync(AnsweredQuizModel value)
+        {
+            var answeredQuiz = new AnsweredQuiz();
+            answeredQuiz.Quiz = await MapQuizModelAsync(value.QuizModel);
+            answeredQuiz.AnsweredQuizId = Guid.NewGuid();
+            answeredQuiz.User = await this.userRepository.GetByIDAsync(value.UserID);
+            answeredQuiz.CompletionDate = DateTime.Now;
+
+            answeredQuiz.Score = value.AnsweredQuestionModels.Count(x => x.Answer.IsCorrect);
+
+            return answeredQuiz;
+        }
+
         public async Task<QuizQuestion> MapQuestionModelAsync(QuestionModel questionModel)
         {
             QuizQuestion question = new();
             question.Creator = await this.userRepository.GetByIDAsync(questionModel.UserID);
             question.Question = questionModel.Question;
             question.Quiz = this.quizRepository.GetById(questionModel.QuizID);
-            question.Answers = MapAnswerModel(questionModel.AnswerModels);
+            question.Answers = MapAnswerModels(questionModel.AnswerModels);
             question.CreatorUserID = question.Creator.UserID;
             question.QuizID = question.Quiz.QuizID;
             question.QuizQuestionID = Guid.NewGuid();
@@ -95,22 +126,63 @@ namespace Services
             return model;
         }
 
-        public List<QuizAnswer> MapAnswerModel(IEnumerable<AnswerModel> answerModels)
+        public AnsweredQuestionModel MapQuestion(QuizQuestion question)
+        {
+            var answeredQustionModel = new AnsweredQuestionModel();
+
+            answeredQustionModel.QuestionModel = MapQuizQuestion(question);
+
+            return answeredQustionModel;
+        }
+
+        public QuestionModel MapQuizQuestion(QuizQuestion question)
+        {
+            var questionModel = new QuestionModel();
+            questionModel.Question = question.Question;
+            questionModel.QuizID = question.QuizID;
+            questionModel.UserID = question.CreatorUserID;
+            questionModel.AnswerModels = MapAnswers(question.Answers);
+
+            return questionModel;
+        }
+
+        public List<AnswerModel> MapAnswers(IEnumerable<QuizAnswer> answers)
+        {
+            List<AnswerModel> answerModels = new List<AnswerModel>();
+
+            foreach (var answer in answers)
+            {
+                var answerModel = new AnswerModel();
+                answerModel.AnswerText = answer.AnswerText;
+                answerModel.IsCorrect = answer.IsCorrect;
+                answerModel.AnswerModelID = answer.QuizAnswerID;
+
+                answerModels.Add(answerModel);
+            }
+
+            return answerModels;
+        }
+
+        public List<QuizAnswer> MapAnswerModels(IEnumerable<AnswerModel> answerModels)
         {
             List<QuizAnswer> answers = new List<QuizAnswer>();
             foreach (var model in answerModels)
             {
-                QuizAnswer answer = new QuizAnswer
-                {
-                    AnswerText = model.AnswerText,
-                    IsCorrect = model.IsCorrect,
-                    QuizAnswerID = Guid.NewGuid()
-                };
-
+                QuizAnswer answer = MapAnswerModel(model);
                 answers.Add(answer);
             }
 
             return answers;
+        }
+
+        public QuizAnswer MapAnswerModel(AnswerModel model)
+        {
+            return new QuizAnswer
+            {
+                AnswerText = model.AnswerText,
+                IsCorrect = model.IsCorrect,
+                QuizAnswerID = Guid.NewGuid()
+            };
         }
     }
 }

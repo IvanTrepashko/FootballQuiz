@@ -9,7 +9,7 @@ namespace UI.Models
     {
         public string Question { get; set; }
 
-        public List<AnswerModel> AnswerModels { get; set; }
+        public List<QuizAnswerModel> AnswerModels { get; set; }
 
         public DateTime CreationDate { get; set; }
 
@@ -19,7 +19,7 @@ namespace UI.Models
 
         public QuestionModel()
         {
-            this.AnswerModels = new List<AnswerModel>();
+            this.AnswerModels = new List<QuizAnswerModel>();
         }
     }
 }

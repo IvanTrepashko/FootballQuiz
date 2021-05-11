@@ -20,5 +20,8 @@ namespace RepositoryContracts
         IEnumerable<Quiz> GetAll();
 
         List<Quiz> GetAllByUserId(string userId);
+        
+        Quiz GetRandomQuiz();
+        void AddAnsweredAsync(AnsweredQuiz answeredQuiz);
     }
 }

@@ -30,5 +30,24 @@ namespace Repositories
             string str = AppSettings.Configuration.GetConnectionString(ConnectionString);
             optionsBuilder.UseSqlServer(str);
         }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<AnsweredQuestion>()
+                .HasOne(x => x.Question)
+                .WithOne().OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<AnsweredQuestion>()
+                .HasOne(x => x.QuizAnswer)
+                .WithOne().OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<AnsweredQuestion>()
+              .HasOne(x => x.Quiz)
+              .WithOne().OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<AnsweredQuestion>()
+              .HasOne(x => x.User)
+              .WithOne().OnDelete(DeleteBehavior.Restrict);
+        }
     }
 }

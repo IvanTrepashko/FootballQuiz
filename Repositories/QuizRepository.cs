@@ -32,6 +32,20 @@ namespace Repositories
             this.logger.LogInformation("Quiz was added");
         }
 
+        public async void AddAnsweredAsync(AnsweredQuiz answeredQuiz)
+        {
+            var context = new ApplicationContext();
+
+            answeredQuiz.UserID = answeredQuiz.User.UserID;
+            answeredQuiz.User = null;
+            
+            answeredQuiz.QuizID = answeredQuiz.Quiz.QuizID;
+            answeredQuiz.Quiz = null;
+            
+            context.AnsweredQuizes.Add(answeredQuiz);
+            await context.SaveChangesAsync();
+        }
+
         public async Task DeleteAsync(Guid quizId)
         {
             var context = new ApplicationContext();
@@ -43,7 +57,7 @@ namespace Repositories
         {
             var context = new ApplicationContext();
 
-            return context.Quizes;
+            return context.Quizes.ToList();
         }
 
         public List<Quiz> GetAllByUserId(string userId)
@@ -58,6 +72,15 @@ namespace Repositories
             var context = new ApplicationContext();
 
             return context.Quizes.Find(quizId);
+        }
+
+        public Quiz GetRandomQuiz()
+        {
+            var context = new ApplicationContext();
+
+            int index = new Random().Next(0, context.Quizes.Count() - 1);
+
+            return context.Quizes.ToList().ElementAt(index);
         }
 
         public async void Update(Quiz quiz)

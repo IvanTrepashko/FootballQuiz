@@ -7,8 +7,10 @@ namespace UI.Models
 {
     public class AnswerModel
     {
-        public string AnswerText { get; set; }
+        public Guid AnswerModelID { get; set; }
 
-        public bool IsCorrect { get; set; }
+        public QuizAnswerModel QuizAnswerModel { get; set; }
+
+        public bool IsChosen { get; set; }
     }
 }
