@@ -32,10 +32,10 @@ namespace API.Controllers
         }
 
         // GET api/<QuizController>/5
-        [HttpGet("{id}")]
-        public IActionResult Get(Guid id)
+        [HttpGet("{quizId}")]
+        public IActionResult Get(Guid quizId)
         {
-            var quiz = this.quizService.GetById(id);
+            var quiz = this.quizService.GetById(quizId);
             return new JsonResult(quiz);
         }
 
@@ -58,8 +58,8 @@ namespace API.Controllers
         }
 
         // PUT api/<QuizController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] QuizModel value)
+        [HttpPut]
+        public void Put([FromBody] QuizModel value)
         {
             this.quizService.UpdateAsync(value);
         }

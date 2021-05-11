@@ -4,6 +4,7 @@
 
 @inject HttpClient client
 @inject AuthenticationStateProvider authenticationStateProvider
+@inject NavigationManager navigationManager
 
 <h3>Добавьте ответы для викторины</h3>
 
@@ -12,21 +13,24 @@
     <ValidationSummary />
     <p>
         <label>
-            Имя викторины:
+            Вопрос:
             <InputText @bind-Value="QuestionModel.Question" />
         </label>
     </p>
+    <br/>
     <p>
         <label>
             Ответ №1
             <InputText @bind-Value="AnswerModel1.AnswerText" />
             <InputCheckbox @bind-Value="AnswerModel1.IsCorrect" />
         </label>
+        <br />
         <label>
             Ответ №2
             <InputText @bind-Value="AnswerModel2.AnswerText" />
             <InputCheckbox @bind-Value="AnswerModel2.IsCorrect" />
         </label>
+        <br />
         <label>
             Ответ №3
             <InputText @bind-Value="AnswerModel3.AnswerText" />
@@ -97,5 +101,6 @@
     public void SubmitQuiz()
     {
         client.PostAsJsonAsync<List<QuestionModel>>(@"https://localhost:44333/api/quiz/answers", Questions);
+        navigationManager.NavigateTo("/quizzes");
     }
 }

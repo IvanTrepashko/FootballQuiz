@@ -62,7 +62,7 @@
 
     public void UpdateQuiz(QuizModel quiz)
     {
-
+        navigationManager.NavigateTo($"/editquiz/{quiz.QuizID}");
     }
 
     protected async override Task OnInitializedAsync()

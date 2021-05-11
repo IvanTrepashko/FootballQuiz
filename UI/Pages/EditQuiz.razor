@@ -1,0 +1,67 @@
+﻿@page "/editquiz/{QuizID}"
+
+@using Models
+
+@inject HttpClient client 
+@inject NavigationManager navigationManager
+
+<h3>Редактирование викторины</h3>
+
+<div>
+    @if (QuizModel is null)
+    {
+        <p>Загрузка...</p>
+    }
+    else
+    {
+        <EditForm Model="@QuizModel" OnValidSubmit="@HandleValidSubmit">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+            <p>
+                <label>
+                    Имя викторины:
+                    <InputText @bind-Value="QuizModel.Name" />
+                </label>
+            </p>
+            <p>
+                <label>
+                    Тема викторины
+                    <InputText @bind-Value="QuizModel.Topic" />
+                </label>
+            </p>
+            <p>
+                <label>
+                    Краткое описание викторины
+                    <InputTextArea @bind-Value="QuizModel.Description" />
+                </label>
+            </p>
+            <p>
+                <label>
+                    Теги(опционально)
+                    <InputTextArea @bind-Value="QuizModel.Tags" />
+                </label>
+            </p>
+            <button type="submit">Создать</button>
+        </EditForm>
+    }
+</div>
+
+@code 
+{
+    [Parameter]
+    public string QuizID { get; set; }
+
+    public QuizModel QuizModel { get; set; }
+
+    protected async override Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        QuizModel = await client.GetFromJsonAsync<QuizModel>(@"https://localhost:44333/api/quiz/" + QuizID);
+    }
+
+    public async void HandleValidSubmit()
+    {
+        await client.PutAsJsonAsync<QuizModel>(@"https://localhost:44333/api/quiz", QuizModel);
+        navigationManager.NavigateTo("/quizzes");
+    }
+}

@@ -91,6 +91,7 @@ namespace Services
             model.Topic = quiz.Topic;
             model.Description = quiz.Description;
             model.QuizID = quiz.QuizID;
+            model.UserID = quiz.CreatorUserID;
             return model;
         }
 
