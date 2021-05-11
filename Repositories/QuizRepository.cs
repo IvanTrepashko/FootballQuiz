@@ -68,6 +68,13 @@ namespace Repositories
             return context.Quizes.Where(x => x.CreatorUserID.Equals(userId)).ToList();
         }
 
+        public AnsweredQuiz GetAnsweredById(Guid quizId)
+        {
+            using ApplicationContext context = new ApplicationContext();
+
+            return context.AnsweredQuizes.Find(quizId);
+        }
+
         public List<AnsweredQuiz> GetAnsweredByUserId(string userId)
         {
             var context = new ApplicationContext();

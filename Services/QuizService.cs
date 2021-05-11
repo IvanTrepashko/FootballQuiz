@@ -147,5 +147,19 @@ namespace Services
 
             return answeredQuizModels;
         }
+
+        public DetailedAnsweredQuiz GetDetailedInfo(Guid quizId)
+        {
+            var detailedAnsweredQuiz = new DetailedAnsweredQuiz();
+
+            AnsweredQuiz answeredQuiz = this.quizRepository.GetAnsweredById(quizId);
+
+            detailedAnsweredQuiz.QuizModel = this.modelMapper.MapQuiz(this.quizRepository.GetById(answeredQuiz.QuizID));
+            var answeredQuestions = this.questionRepository.GetAnsweredQuestions(quizId);
+
+            detailedAnsweredQuiz.AnsweredQuestionModels = this.modelMapper.MapAnsweredQuestions(answeredQuestions);
+
+            return detailedAnsweredQuiz;
+        }
     }
 }

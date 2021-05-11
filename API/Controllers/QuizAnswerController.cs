@@ -21,6 +21,15 @@ namespace API.Controllers
             this.quizService = quizService;
         }
 
+        [HttpGet]
+        [Route("detailed")]
+        public IActionResult GetDetailed(Guid quizId)
+        {
+            DetailedAnsweredQuiz detailedInfo = this.quizService.GetDetailedInfo(quizId);
+
+            return new JsonResult(detailedInfo);
+        }
+
         // GET: api/<QuizAnswerController>
         [HttpGet]
         public IActionResult Get(Guid quizId)

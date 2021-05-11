@@ -16,5 +16,7 @@ namespace RepositoryContracts
         List<QuizQuestion> GetQuestions(Guid quizID);
 
         void AddAnsweredQuestions(List<AnsweredQuestion> answers);
+
+        List<AnsweredQuestion> GetAnsweredQuestions(Guid quizId);
     }
 }

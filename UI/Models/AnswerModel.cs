@@ -12,5 +12,9 @@ namespace UI.Models
         public QuizAnswerModel QuizAnswerModel { get; set; }
 
         public bool IsChosen { get; set; }
+
+        public bool IsCorrect { get; set; }
+
+        public string AnswerText { get; set; }
     }
 }

@@ -61,6 +61,17 @@ namespace Repositories
             }
         }
 
+        public List<AnsweredQuestion> GetAnsweredQuestions(Guid quizId)
+        {
+            var context = new ApplicationContext();
+
+            return context.AnsweredQuestions
+                .Include(x => x.Quiz)
+                .Include(x => x.Question)
+                .Include(x => x.QuizAnswer)
+                .Where(x => x.Quiz.AnsweredQuizId.Equals(quizId)).ToList();
+        }
+
         public List<QuizQuestion> GetQuestions(Guid quizID)
         {
             var context = new ApplicationContext();

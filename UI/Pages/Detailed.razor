@@ -1,10 +1,57 @@
-﻿@page "/detailed/{answeredQuizID}" 
+﻿@page "/detailed/{answeredQuizID}"
 
-<h3>Detailed</h3>
+@using Models
 
-@AnsweredQuizID
+@inject HttpClient client
+
+<h3>Детальная статистика</h3>
+
+@if (DetailedAnsweredQuiz is null)
+{
+    <p>Загрузка...</p>
+}
+else
+{
+    <div>
+        <p>
+            Имя викторины: @DetailedAnsweredQuiz.QuizModel.Name
+        </p>
+        <p>
+            Описание: @DetailedAnsweredQuiz.QuizModel.Description
+        </p>
+        <p>
+            Теги: @DetailedAnsweredQuiz.QuizModel.Tags
+        </p>
+        <p>
+            Тема: @DetailedAnsweredQuiz.QuizModel.Topic
+        </p>
+    </div>
+    <div>
+        <p>Ваши ответы:</p>
+        @foreach (var answer in DetailedAnsweredQuiz.AnsweredQuestionModels)
+        {
+            <p>
+                Вопрос: @answer.QuestionModel.Question
+            </p>
+            <p>
+                Ответ: @answer.Answer.AnswerText
+            </p>
+            <p>
+                Является ли правильным:  @(answer.Answer.IsCorrect ? "Да" : "Нет")
+            </p>
+        }
+    </div>
+}
+
 
 @code {
     [Parameter]
     public string AnsweredQuizID { get; set; }
+
+    public DetailedAnsweredQuiz DetailedAnsweredQuiz { get; set; }
+
+    protected async override Task OnInitializedAsync()
+    {
+        DetailedAnsweredQuiz = await client.GetFromJsonAsync<DetailedAnsweredQuiz>("https://localhost:44333/api/quizanswer/detailed?quizId=" + AnsweredQuizID);
+    }
 }

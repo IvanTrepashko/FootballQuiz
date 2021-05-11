@@ -24,5 +24,6 @@ namespace RepositoryContracts
         Quiz GetRandomQuiz();
         void AddAnsweredAsync(AnsweredQuiz answeredQuiz);
         List<AnsweredQuiz> GetAnsweredByUserId(string userId);
+        AnsweredQuiz GetAnsweredById(Guid quizId);
     }
 }

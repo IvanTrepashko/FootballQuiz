@@ -16,6 +16,8 @@ namespace ServiceContracts.Models
 
         public List<AnsweredQuestionModel> AnsweredQuestionModels { get; set; }
 
+        public int Score { get; set; }
+
         public AnsweredQuizModel()
         {
             this.AnsweredQuestionModels = new List<AnsweredQuestionModel>();

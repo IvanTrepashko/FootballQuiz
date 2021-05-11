@@ -153,10 +153,34 @@ namespace Services
             foreach (var answeredQuiz in answeredQuizzes)
             {
                 var answeredQuizModel = MapAnsweredQuiz(answeredQuiz);
+                answeredQuizModel.Score = answeredQuiz.Score;
                 answeredQuizModels.Add(answeredQuizModel);
             }
 
             return answeredQuizModels;
+        }
+
+        public List<AnsweredQuestionModel> MapAnsweredQuestions(List<AnsweredQuestion> answeredQuestions)
+        {
+            var answeredQuestionModels = new List<AnsweredQuestionModel>();
+
+            foreach (var answeredQuestion in answeredQuestions)
+            {
+                var answeredQuestionModel = MapAnsweredQuestion(answeredQuestion);
+                answeredQuestionModels.Add(answeredQuestionModel);
+            }
+
+            return answeredQuestionModels;
+        }
+
+        public AnsweredQuestionModel MapAnsweredQuestion(AnsweredQuestion answeredQuestion)
+        {
+            AnsweredQuestionModel model = new AnsweredQuestionModel();
+            model.QuestionModel = MapQuizQuestion(answeredQuestion.Question);
+            model.Answer = MapAnswer(answeredQuestion.QuizAnswer);
+            model.AnswerModelID = answeredQuestion.AnsweredQuestionId;
+
+            return model;
         }
 
         public AnsweredQuizModel MapAnsweredQuiz(AnsweredQuiz answeredQuiz)
@@ -175,15 +199,21 @@ namespace Services
 
             foreach (var answer in answers)
             {
-                var answerModel = new AnswerModel();
-                answerModel.AnswerText = answer.AnswerText;
-                answerModel.IsCorrect = answer.IsCorrect;
-                answerModel.AnswerModelID = answer.QuizAnswerID;
+                AnswerModel answerModel = MapAnswer(answer);
 
                 answerModels.Add(answerModel);
             }
 
             return answerModels;
+        }
+
+        private static AnswerModel MapAnswer(QuizAnswer answer)
+        {
+            var answerModel = new AnswerModel();
+            answerModel.AnswerText = answer.AnswerText;
+            answerModel.IsCorrect = answer.IsCorrect;
+            answerModel.AnswerModelID = answer.QuizAnswerID;
+            return answerModel;
         }
 
         public List<QuizAnswer> MapAnswerModels(IEnumerable<AnswerModel> answerModels)

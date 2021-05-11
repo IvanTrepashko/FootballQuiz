@@ -5,16 +5,10 @@ using System.Threading.Tasks;
 
 namespace UI.Models
 {
-    public class AnsweredQuizModel
+    public class DetailedAnsweredQuiz
     {
-        public string UserID { get; set; }
-
-        public Guid AnsweredQuizModelID { get; set; }
-
         public QuizModel QuizModel { get; set; }
 
         public List<AnsweredQuestionModel> AnsweredQuestionModels { get; set; }
-
-        public int Score { get; set; }
     }
 }

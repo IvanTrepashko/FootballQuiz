@@ -21,6 +21,7 @@ else
                 <th>Тема</th>
                 <th>Описание</th>
                 <th>Теги</th>
+                <th>Счет</th>
                 <th></th>
             </tr>
         </thead>
@@ -32,6 +33,7 @@ else
                     <td>@answeredQuiz.QuizModel.Topic</td>
                     <td>@answeredQuiz.QuizModel.Description</td>
                     <td>@answeredQuiz.QuizModel.Tags</td>
+                    <td>@answeredQuiz.Score</td>
                     <td>
                         <button class="btn btn-primary" @onclick="() => ViewDetailedDescription(answeredQuiz)">Подробнее</button>
                     </td>
