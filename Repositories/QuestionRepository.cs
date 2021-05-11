@@ -23,7 +23,7 @@ namespace Repositories
                 answer.QuizAnswerID = answer.QuizAnswer.QuizAnswerID;
                 answer.QuizAnswer = null;
 
-                answer.AnsweredQuizId = answer.Quiz.QuizID;
+                answer.AnsweredQuizId = answer.Quiz.AnsweredQuizId;
                 answer.Quiz = null;
 
                 answer.QuizQuestionID = answer.Question.QuizQuestionID;

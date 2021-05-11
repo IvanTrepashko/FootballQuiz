@@ -35,19 +35,19 @@ namespace Repositories
         {
             modelBuilder.Entity<AnsweredQuestion>()
                 .HasOne(x => x.Question)
-                .WithOne().OnDelete(DeleteBehavior.Restrict);
+                .WithMany().OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<AnsweredQuestion>()
                 .HasOne(x => x.QuizAnswer)
-                .WithOne().OnDelete(DeleteBehavior.Restrict);
+                .WithMany().OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<AnsweredQuestion>()
               .HasOne(x => x.Quiz)
-              .WithOne().OnDelete(DeleteBehavior.Restrict);
+              .WithMany().OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<AnsweredQuestion>()
               .HasOne(x => x.User)
-              .WithOne().OnDelete(DeleteBehavior.Restrict);
+              .WithMany().OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

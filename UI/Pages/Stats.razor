@@ -1,0 +1,64 @@
+﻿@page "/stats"
+
+@using Models
+
+@inject AuthenticationStateProvider authenticationStateProvider
+@inject HttpClient client
+@inject NavigationManager navigationManager
+
+<h3>Викторины</h3>
+
+@if (AnsweredQuizModels is null)
+{
+    <p>Загрузка...</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Название</th>
+                <th>Тема</th>
+                <th>Описание</th>
+                <th>Теги</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var answeredQuiz in AnsweredQuizModels)
+            {
+                <tr>
+                    <td>@answeredQuiz.QuizModel.Name</td>
+                    <td>@answeredQuiz.QuizModel.Topic</td>
+                    <td>@answeredQuiz.QuizModel.Description</td>
+                    <td>@answeredQuiz.QuizModel.Tags</td>
+                    <td>
+                        <button class="btn btn-primary" @onclick="() => ViewDetailedDescription(answeredQuiz)">Подробнее</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code
+{
+    List<AnsweredQuizModel> AnsweredQuizModels;
+
+    public void ViewDetailedDescription(AnsweredQuizModel quiz)
+    {
+        navigationManager.NavigateTo("/detailed/"+quiz.AnsweredQuizModelID);
+    }
+
+    protected async override Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        var authState = await authenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        string userId = user.Claims.Where(x => x.Type.Equals("sub")).FirstOrDefault().Value;
+
+        AnsweredQuizModels = await client.GetFromJsonAsync<List<AnsweredQuizModel>>(@"https://localhost:44333/api/quizanswer/answered?userId="+userId);
+    }
+}

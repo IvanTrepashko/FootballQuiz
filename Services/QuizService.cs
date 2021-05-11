@@ -91,7 +91,13 @@ namespace Services
         {
             var answeredQuizModel = new AnsweredQuizModel();
             var quiz = this.quizRepository.GetRandomQuiz();
+            CreateAnsweredQuizModel(answeredQuizModel, quiz);
 
+            return answeredQuizModel;
+        }
+
+        private void CreateAnsweredQuizModel(AnsweredQuizModel answeredQuizModel, Quiz quiz)
+        {
             answeredQuizModel.QuizModel = this.modelMapper.MapQuiz(quiz);
 
             var questions = this.questionRepository.GetQuestions(quiz.QuizID);
@@ -100,8 +106,6 @@ namespace Services
             {
                 answeredQuizModel.AnsweredQuestionModels.Add(this.modelMapper.MapQuestion(question));
             }
-
-            return answeredQuizModel;
         }
 
         public async Task UpdateAsync(QuizModel value)
@@ -114,6 +118,34 @@ namespace Services
             var quiz = await this.modelMapper.MapQuizModelAsync(value);
 
             this.quizRepository.Update(quiz);
+        }
+
+        public List<QuizModel> GetAll()
+        {
+            var quizzes = this.quizRepository.GetAll().ToList();
+
+            var quizModels = this.modelMapper.MapQuizzes(quizzes);
+
+            return quizModels;
+        }
+
+        public AnsweredQuizModel GetAnsweredById(Guid quizId)
+        {
+            var quiz = this.quizRepository.GetById(quizId);
+            var answeredQuizModel = new AnsweredQuizModel();
+
+            CreateAnsweredQuizModel(answeredQuizModel, quiz);
+
+            return answeredQuizModel;
+        }
+
+        public List<AnsweredQuizModel> GetAnsweredByUserId(string userId)
+        {
+            List<AnsweredQuiz> answeredQuizzes = this.quizRepository.GetAnsweredByUserId(userId);
+
+            List<AnsweredQuizModel> answeredQuizModels = this.modelMapper.MapAnsweredQuizzes(answeredQuizzes);
+
+            return answeredQuizModels;
         }
     }
 }

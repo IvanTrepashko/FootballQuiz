@@ -1,4 +1,4 @@
-﻿@page "/quizzes"
+﻿@page "/allquizzes"
 
 @using Models
 
@@ -8,9 +8,6 @@
 
 <h3>Викторины</h3>
 
-    <NavLink class="nav-link" href="addquiz" Match="NavLinkMatch.All">
-        Добавить викторину
-    </NavLink>
     @if (QuizModels is null)
     {
         <p>Загрузка...</p>
@@ -25,7 +22,6 @@
                     <th>Описание</th>
                     <th>Теги</th>
                     <th></th>
-                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -37,10 +33,7 @@
                         <td>@quiz.Description</td>
                         <td>@quiz.Tags</td>
                         <td>
-                            <button class="btn btn-danger" @onclick="() => DeleteQuiz(quiz)">Удалить</button>
-                        </td>
-                        <td>
-                            <button class="btn btn-info" @onclick="() => UpdateQuiz(quiz)">Редактировать</button>
+                            <button class="btn btn-primary" @onclick="() => TakeSelectedQuiz(quiz)">Пройти</button>
                         </td>
                     </tr>
                 }
@@ -52,15 +45,9 @@
 {
     List<QuizModel> QuizModels;
 
-    public void DeleteQuiz(QuizModel quiz)
+    public void TakeSelectedQuiz(QuizModel quiz)
     {
-        client.DeleteAsync("https://localhost:44333/api/quiz/" + quiz.QuizID);
-        QuizModels.Remove(quiz);
-    }
-
-    public void UpdateQuiz(QuizModel quiz)
-    {
-        navigationManager.NavigateTo($"/editquiz/{quiz.QuizID}");
+        navigationManager.NavigateTo("/takequiz/" + quiz.QuizID);
     }
 
     protected async override Task OnInitializedAsync()
@@ -72,6 +59,6 @@
 
         string userId = user.Claims.Where(x => x.Type.Equals("sub")).FirstOrDefault().Value;
 
-        QuizModels = await client.GetFromJsonAsync<List<QuizModel>>(@"https://localhost:44333/api/quiz?userId=" + userId);
+        QuizModels = await client.GetFromJsonAsync<List<QuizModel>>(@"https://localhost:44333/api/quiz/all");
     }
 }

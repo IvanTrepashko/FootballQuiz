@@ -17,6 +17,8 @@ namespace UI.Models
 
         public Guid QuizID { get; set; }
 
+        public Guid QuestionModelID { get; set; }
+
         public QuestionModel()
         {
             this.AnswerModels = new List<QuizAnswerModel>();

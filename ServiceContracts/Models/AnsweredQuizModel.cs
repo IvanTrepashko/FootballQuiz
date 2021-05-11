@@ -12,6 +12,8 @@ namespace ServiceContracts.Models
 
         public QuizModel QuizModel { get; set; }
 
+        public Guid AnsweredQuizModelID { get; set; }
+
         public List<AnsweredQuestionModel> AnsweredQuestionModels { get; set; }
 
         public AnsweredQuizModel()

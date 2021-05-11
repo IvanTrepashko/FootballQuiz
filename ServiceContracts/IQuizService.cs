@@ -24,5 +24,10 @@ namespace ServiceContracts
         AnsweredQuizModel GetRandom();
 
         void AddAnsweredAsync(AnsweredQuizModel value);
+
+        List<QuizModel> GetAll();
+
+        AnsweredQuizModel GetAnsweredById(Guid quizId);
+        List<AnsweredQuizModel> GetAnsweredByUserId(string userId);
     }
 }

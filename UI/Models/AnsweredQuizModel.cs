@@ -9,6 +9,8 @@ namespace UI.Models
     {
         public string UserID { get; set; }
 
+        public Guid AnsweredQuizModelID { get; set; }
+
         public QuizModel QuizModel { get; set; }
 
         public List<AnsweredQuestionModel> AnsweredQuestionModels { get; set; }

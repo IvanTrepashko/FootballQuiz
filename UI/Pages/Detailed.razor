@@ -1,0 +1,10 @@
+﻿@page "/detailed/{answeredQuizID}" 
+
+<h3>Detailed</h3>
+
+@AnsweredQuizID
+
+@code {
+    [Parameter]
+    public string AnsweredQuizID { get; set; }
+}

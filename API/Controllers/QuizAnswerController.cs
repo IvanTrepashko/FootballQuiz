@@ -23,16 +23,25 @@ namespace API.Controllers
 
         // GET: api/<QuizAnswerController>
         [HttpGet]
-        public IEnumerable<string> Get()
+        public IActionResult Get(Guid quizId)
         {
-            return new string[] { "value1", "value2" };
+            return new JsonResult(this.quizService.GetAnsweredById(quizId));
+        }
+
+        [HttpGet]
+        [Route("answered")]
+        public IActionResult GetAnswered(string userId)
+        {
+            List<AnsweredQuizModel> answeredQuizzes = this.quizService.GetAnsweredByUserId(userId);
+            return new JsonResult(answeredQuizzes);
         }
 
         [HttpGet]
         [Route("random")]
         public IActionResult GetRandomQuiz()
         {
-            return new JsonResult(this.quizService.GetRandom());
+            var quiz = this.quizService.GetRandom();
+            return new JsonResult(quiz);
         }
 
         // GET api/<QuizAnswerController>/5

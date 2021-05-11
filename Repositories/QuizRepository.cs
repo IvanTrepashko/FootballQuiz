@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using RepositoryContracts;
 using RepositoryContracts.Models;
 using System;
@@ -65,6 +66,13 @@ namespace Repositories
             var context = new ApplicationContext();
 
             return context.Quizes.Where(x => x.CreatorUserID.Equals(userId)).ToList();
+        }
+
+        public List<AnsweredQuiz> GetAnsweredByUserId(string userId)
+        {
+            var context = new ApplicationContext();
+
+            return context.AnsweredQuizes.Include(x => x.Quiz).Where(x => x.UserID.Equals(userId)).ToList();
         }
 
         public Quiz GetById(Guid quizId)

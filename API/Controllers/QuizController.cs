@@ -39,6 +39,15 @@ namespace API.Controllers
             return new JsonResult(quiz);
         }
 
+        [HttpGet]
+        [Route("all")]
+        public IActionResult GetAll()
+        {
+            List<QuizModel> quizzes = this.quizService.GetAll();
+
+            return new JsonResult(quizzes);
+        }
+
         // POST api/<QuizController>
         [HttpPost]
         public void Post([FromBody] QuizModel value)
@@ -69,13 +78,6 @@ namespace API.Controllers
         public void Delete(Guid id)
         {
             this.quizService.DeleteAsync(id);
-        }
-
-        [HttpGet]
-        [Route("random")]
-        public void GetRandomQuiz()
-        {
-
         }
     }
 }

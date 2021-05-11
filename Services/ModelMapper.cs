@@ -89,7 +89,7 @@ namespace Services
             question.Answers = MapAnswerModels(questionModel.AnswerModels);
             question.CreatorUserID = question.Creator.UserID;
             question.QuizID = question.Quiz.QuizID;
-            question.QuizQuestionID = Guid.NewGuid();
+            question.QuizQuestionID = questionModel.QuestionModelID;
 
             foreach (var answer in question.Answers)
             {
@@ -141,9 +141,32 @@ namespace Services
             questionModel.Question = question.Question;
             questionModel.QuizID = question.QuizID;
             questionModel.UserID = question.CreatorUserID;
+            questionModel.QuestionModelID = question.QuizQuestionID;
             questionModel.AnswerModels = MapAnswers(question.Answers);
 
             return questionModel;
+        }
+
+        public List<AnsweredQuizModel> MapAnsweredQuizzes(List<AnsweredQuiz> answeredQuizzes)
+        {
+            List<AnsweredQuizModel> answeredQuizModels = new List<AnsweredQuizModel>();
+            foreach (var answeredQuiz in answeredQuizzes)
+            {
+                var answeredQuizModel = MapAnsweredQuiz(answeredQuiz);
+                answeredQuizModels.Add(answeredQuizModel);
+            }
+
+            return answeredQuizModels;
+        }
+
+        public AnsweredQuizModel MapAnsweredQuiz(AnsweredQuiz answeredQuiz)
+        {
+            AnsweredQuizModel answeredQuizModel = new AnsweredQuizModel();
+            answeredQuizModel.UserID = answeredQuiz.UserID;
+            answeredQuizModel.QuizModel = MapQuiz(answeredQuiz.Quiz);
+            answeredQuizModel.AnsweredQuizModelID = answeredQuiz.AnsweredQuizId;
+
+            return answeredQuizModel;
         }
 
         public List<AnswerModel> MapAnswers(IEnumerable<QuizAnswer> answers)
@@ -181,7 +204,7 @@ namespace Services
             {
                 AnswerText = model.AnswerText,
                 IsCorrect = model.IsCorrect,
-                QuizAnswerID = Guid.NewGuid()
+                QuizAnswerID = model.AnswerModelID,
             };
         }
     }

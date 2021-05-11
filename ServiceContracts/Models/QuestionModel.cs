@@ -17,5 +17,7 @@ namespace ServiceContracts.Models
         public string UserID { get; set; }
 
         public Guid QuizID { get; set; }
+
+        public Guid QuestionModelID { get; set; }
     }
 }
