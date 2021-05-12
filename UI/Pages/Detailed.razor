@@ -4,6 +4,17 @@
 
 @inject HttpClient client
 
+<style>
+    .answer {
+        padding-left: 10px;
+        padding-top: 10px;
+        display: block;
+        width: 300px;
+        height: 120px;
+        border: 1px solid black;
+        border-radius: 10px;
+    }
+</style>
 <h3>Детальная статистика</h3>
 
 @if (DetailedAnsweredQuiz is null)
@@ -28,17 +39,21 @@ else
     </div>
     <div>
         <p>Ваши ответы:</p>
+        <br />
         @foreach (var answer in DetailedAnsweredQuiz.AnsweredQuestionModels)
         {
-            <p>
-                Вопрос: @answer.QuestionModel.Question
-            </p>
-            <p>
-                Ответ: @answer.Answer.AnswerText
-            </p>
-            <p>
-                Является ли правильным:  @(answer.Answer.IsCorrect ? "Да" : "Нет")
-            </p>
+            <div class="answer">
+                <p>
+                    Вопрос: @answer.QuestionModel.Question
+                </p>
+                <p>
+                    Ответ: @answer.Answer.AnswerText
+                </p>
+                <p>
+                    Является ли правильным: @(answer.Answer.IsCorrect ? "Да" : "Нет")
+                </p>
+            </div>
+            <br />
         }
     </div>
 }

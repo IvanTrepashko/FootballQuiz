@@ -6,43 +6,44 @@
 @inject NavigationManager navigationManager
 
 <h3>Поиск по тегам</h3>
-    
 <EditForm Model="@TagsModel">
-    <label>
-        Введите теги (через ",")
-        <InputText @bind-Value="TagsModel.Tags" />
-    </label>
-    <button @onclick="LoadQuizzesByTags">Создать</button>
+    <div class="form-group">
+        <label>
+            Введите теги (через ",")
+            <InputText class="form-control" @bind-Value="TagsModel.Tags" />
+        </label>
+        <button class="btn btn-info" @onclick="LoadQuizzesByTags">Поиск</button>
+    </div>
 </EditForm>
-    
-    @if (QuizModels != null)
-    {
-        <table class="table">
-            <thead>
+
+@if (QuizModels != null)
+{
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Название</th>
+                <th>Тема</th>
+                <th>Описание</th>
+                <th>Теги</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var quiz in QuizModels)
+            {
                 <tr>
-                    <th>Название</th>
-                    <th>Тема</th>
-                    <th>Описание</th>
-                    <th>Теги</th>
-                    <th></th>
+                    <td>@quiz.Name</td>
+                    <td>@quiz.Topic</td>
+                    <td>@quiz.Description</td>
+                    <td>@quiz.Tags</td>
+                    <td>
+                        <button class="btn btn-primary" @onclick="() => TakeSelectedQuiz(quiz)">Пройти</button>
+                    </td>
                 </tr>
-            </thead>
-            <tbody>
-                @foreach (var quiz in QuizModels)
-                {
-                    <tr>
-                        <td>@quiz.Name</td>
-                        <td>@quiz.Topic</td>
-                        <td>@quiz.Description</td>
-                        <td>@quiz.Tags</td>
-                        <td>
-                            <button class="btn btn-primary" @onclick="() => TakeSelectedQuiz(quiz)">Пройти</button>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    }
+            }
+        </tbody>
+    </table>
+}
 
 @code {
     public TagsModel TagsModel { get; set; } = new TagsModel();

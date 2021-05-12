@@ -17,31 +17,31 @@
         <EditForm Model="@QuizModel" OnValidSubmit="@HandleValidSubmit">
             <DataAnnotationsValidator />
             <ValidationSummary />
-            <p>
+            <div class="form-group">
                 <label>
                     Имя викторины:
-                    <InputText @bind-Value="QuizModel.Name" />
+                    <InputText class="form-control" @bind-Value="QuizModel.Name" />
                 </label>
-            </p>
-            <p>
+            </div>
+            <div class="form-group">
                 <label>
                     Тема викторины
-                    <InputText @bind-Value="QuizModel.Topic" />
+                    <InputText class="form-control" @bind-Value="QuizModel.Topic" />
                 </label>
-            </p>
-            <p>
+            </div>
+            <div class="form-group">
                 <label>
                     Краткое описание викторины
-                    <InputTextArea @bind-Value="QuizModel.Description" />
+                    <InputTextArea class="form-control" @bind-Value="QuizModel.Description" />
                 </label>
-            </p>
-            <p>
+            </div>
+            <div class="form-group">
                 <label>
                     Теги(опционально)
-                    <InputTextArea @bind-Value="QuizModel.Tags" />
+                    <InputTextArea class="form-control" @bind-Value="QuizModel.Tags" />
                 </label>
-            </p>
-            <button class="btn btn-secondary" type="submit">Сохранить</button>
+            </div>
+            <button class="btn btn-primary" type="submit">Сохранить</button>
         </EditForm>
     }
 </div>

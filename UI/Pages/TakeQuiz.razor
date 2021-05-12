@@ -18,24 +18,25 @@
         <EditForm Model="AnsweredQuizModel" OnValidSubmit="HandleValidSubmit">
             @foreach (var question in AnsweredQuizModel.AnsweredQuestionModels)
             {
-                <div>
+                <div class="answer">
                     <p>Вопрос: @question.QuestionModel.Question</p>
                     <div>
                         <InputRadioGroup Name="@question.QuestionModel.Question" @bind-Value="@question.AnswerModelID">
                             @foreach (var answer in question.QuestionModel.AnswerModels)
                                     {
-                                <InputRadio Name="@question.QuestionModel.Question" Value="answer.AnswerModelID" />
-                                @answer.AnswerText
+                                <div class="form-check">
+                                    <InputRadio class="form-check-input" Name="@question.QuestionModel.Question" Value="answer.AnswerModelID" />
+                                    <label class="form-check-label">@answer.AnswerText</label>
+                                </div>
                                 <br />
                                     }
                         </InputRadioGroup>
                     </div>
                 </div>
             }
-            <button type="submit">Ответить</button>
+            <button class="btn btn-primary" type="submit">Ответить</button>
         </EditForm>
-
-
+        <br />
         @if (Score != -1)
         {
             <p>

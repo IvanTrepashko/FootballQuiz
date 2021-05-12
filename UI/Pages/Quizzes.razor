@@ -8,16 +8,19 @@
 
 <h3>Викторины</h3>
 
-    <NavLink class="nav-link" href="addquiz" Match="NavLinkMatch.All">
+    <NavLink class="btn btn-primary" href="addquiz" Match="NavLinkMatch.All">
         Добавить викторину
     </NavLink>
+    <br/>
+    <br/>
+
     @if (QuizModels is null)
     {
         <p>Загрузка...</p>
     }
     else
     {
-        <table class="table">
+        <table class="table table-hover">
             <thead>
                 <tr>
                     <th>Название</th>

@@ -1,96 +1,110 @@
-﻿@page "/randomquiz" 
+﻿@page "/randomquiz"
 
-@using Models 
+@using Models
 
-@inject HttpClient client 
+@inject HttpClient client
 @inject AuthenticationStateProvider auth
 
-<h3>Случайная викторина</h3>
+    <style>
+        .answer {
+            padding-left: 10px;
+            padding-top: 10px;
+            display: block;
+            width: 300px;
+            height: 130px;
+            border: 1px solid black;
+            border-radius: 10px;
+        }
+    </style>
 
-<div>
-    @if (AnsweredQuizModel is null)
-    {
-        <p>Загрузка...</p>
-    }
-    else
-    {
-        <h3>@AnsweredQuizModel.QuizModel.Name</h3>
-        <EditForm Model="AnsweredQuizModel" OnValidSubmit="HandleValidSubmit">
-            @foreach (var question in AnsweredQuizModel.AnsweredQuestionModels)
-            {
-                <div>
-                    <p>Вопрос: @question.QuestionModel.Question</p>
-                    <div>
-                        <InputRadioGroup Name="@question.QuestionModel.Question" @bind-Value="@question.AnswerModelID">
-                            @foreach (var answer in question.QuestionModel.AnswerModels)
-                            {
-                                <InputRadio Name="@question.QuestionModel.Question" Value="answer.AnswerModelID" />
-                                       @answer.AnswerText
-                                <br/>
-                            }
-                        </InputRadioGroup>
+    <h3>Случайная викторина</h3>
+
+    <div>
+        @if (AnsweredQuizModel is null)
+        {
+            <p>Загрузка...</p>
+        }
+        else
+        {
+            <h3>@AnsweredQuizModel.QuizModel.Name</h3>
+            <EditForm Model="AnsweredQuizModel" OnValidSubmit="HandleValidSubmit">
+                @foreach (var question in AnsweredQuizModel.AnsweredQuestionModels)
+                {
+                    <div class="answer">
+                        <p>Вопрос: @question.QuestionModel.Question</p>
+                        <div>
+                            <InputRadioGroup Name="@question.QuestionModel.Question" @bind-Value="@question.AnswerModelID">
+                                @foreach (var answer in question.QuestionModel.AnswerModels)
+                                        {
+                                    <div class="form-check">
+                                        <InputRadio class="form-check-input" Name="@question.QuestionModel.Question" Value="answer.AnswerModelID" />
+                                        <label class="form-check-label">@answer.AnswerText</label>
+                                    </div>
+                                        }
+                            </InputRadioGroup>
+                        </div>
                     </div>
-                </div>
-            }
-            <button type="submit">Ответить</button>
-        </EditForm>
+                    <br/>
+                }
+                <button class="btn btn-primary" type="submit">Ответить</button>
+            </EditForm>
 
-        @if (Score != -1)
-         {
-            <p>
-                Ваш счет: @Score.Value
-            </p>
-         }
-    }
-</div>
-
-@code
-{
-    public AnsweredQuizModel AnsweredQuizModel { get; set; }
-
-    public int? Score { get; set; } = -1;
-
-    public async void HandleValidSubmit()
-    {
-        var authState = await auth.GetAuthenticationStateAsync();
-        var user = authState.User;
-
-        if (user.Identity.IsAuthenticated && Score == -1)
-        {
-            AnsweredQuizModel.UserID = user.Claims.Where(x => x.Type.Equals("sub")).First().Value;
-            await client.PostAsJsonAsync("https://localhost:44333/api/QuizAnswer", AnsweredQuizModel);
-        }
-
-        var answerIds = AnsweredQuizModel.AnsweredQuestionModels.Select(x => x.AnswerModelID);
-
-        var correctAnswerIds = AnsweredQuizModel.AnsweredQuestionModels.Select(x => x.QuestionModel.AnswerModels)
-             .SelectMany(x => x)
-             .Where(x => x.IsCorrect)
-             .Select(x => x.AnswerModelID);
-
-        Score = 0;
-
-        foreach (var answerId in answerIds)
-        {
-            if (correctAnswerIds.Contains(answerId))
+            @if (Score != -1)
             {
-                Score++;
+                <p>
+                    Ваш счет: @Score.Value
+                </p>
             }
         }
+    </div>
 
-        this.StateHasChanged();
-    }
+    @code
+{
+        public AnsweredQuizModel AnsweredQuizModel { get; set; }
 
-    protected async override Task OnInitializedAsync()
-    {
-        AnsweredQuizModel = await client.GetFromJsonAsync<AnsweredQuizModel>("https://localhost:44333/api/QuizAnswer/random");
+        public int? Score { get; set; } = -1;
 
-        var authState = await auth.GetAuthenticationStateAsync();
-        var user = authState.User;
-
-        if (user.Identity.IsAuthenticated)
+        public async void HandleValidSubmit()
         {
-            AnsweredQuizModel.UserID = user.Claims.Where(x => x.Type.Equals("sub")).First().Value;
+            var authState = await auth.GetAuthenticationStateAsync();
+            var user = authState.User;
+
+            if (user.Identity.IsAuthenticated && Score == -1)
+            {
+                AnsweredQuizModel.UserID = user.Claims.Where(x => x.Type.Equals("sub")).First().Value;
+                await client.PostAsJsonAsync("https://localhost:44333/api/QuizAnswer", AnsweredQuizModel);
+            }
+
+            var answerIds = AnsweredQuizModel.AnsweredQuestionModels.Select(x => x.AnswerModelID);
+
+            var correctAnswerIds = AnsweredQuizModel.AnsweredQuestionModels.Select(x => x.QuestionModel.AnswerModels)
+                 .SelectMany(x => x)
+                 .Where(x => x.IsCorrect)
+                 .Select(x => x.AnswerModelID);
+
+            Score = 0;
+
+            foreach (var answerId in answerIds)
+            {
+                if (correctAnswerIds.Contains(answerId))
+                {
+                    Score++;
+                }
+            }
+
+            this.StateHasChanged();
+        }
+
+        protected async override Task OnInitializedAsync()
+        {
+            AnsweredQuizModel = await client.GetFromJsonAsync<AnsweredQuizModel>("https://localhost:44333/api/QuizAnswer/random");
+
+            var authState = await auth.GetAuthenticationStateAsync();
+            var user = authState.User;
+
+            if (user.Identity.IsAuthenticated)
+            {
+                AnsweredQuizModel.UserID = user.Claims.Where(x => x.Type.Equals("sub")).First().Value;
+            }
         }
     }
-}

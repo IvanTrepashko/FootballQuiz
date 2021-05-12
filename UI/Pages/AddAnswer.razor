@@ -11,37 +11,46 @@
 <EditForm Model="@QuestionModel" OnValidSubmit="@HandleValidSubmit">
     <DataAnnotationsValidator />
     <ValidationSummary />
-    <p>
+    <div class="form-group">
         <label>
             Вопрос:
-            <InputText @bind-Value="QuestionModel.Question" />
+            <InputText class="form-control" @bind-Value="QuestionModel.Question" />
         </label>
-    </p>
-    <br/>
-    <p>
+    </div>
+    <div class="form-group">
         <label>
             Ответ №1
-            <InputText @bind-Value="AnswerModel1.AnswerText" />
-            <InputCheckbox @bind-Value="AnswerModel1.IsCorrect" />
+            <InputText class="form-control" @bind-Value="AnswerModel1.AnswerText" />
         </label>
-        <br />
+        <div class="form-check">
+            <InputCheckbox id="answer1" class="form-check-input" @bind-Value="AnswerModel1.IsCorrect" />
+            <label class="form-check-label" for="answer1">Правильный</label>
+        </div>
+    </div>
+    <div class="form-group">
         <label>
             Ответ №2
-            <InputText @bind-Value="AnswerModel2.AnswerText" />
-            <InputCheckbox @bind-Value="AnswerModel2.IsCorrect" />
+            <InputText class="form-control" @bind-Value="AnswerModel2.AnswerText" />
         </label>
-        <br />
+        <div class="form-check">
+            <InputCheckbox id="asnwer2" class="form-check-input" @bind-Value="AnswerModel2.IsCorrect" />
+            <label class="form-check-label" for="answer2">Правильный</label>
+        </div>
+    </div>
+    <div class="form-group">
         <label>
             Ответ №3
-            <InputText @bind-Value="AnswerModel3.AnswerText" />
-            <InputCheckbox @bind-Value="AnswerModel3.IsCorrect" />
+            <InputText class="form-control" @bind-Value="AnswerModel3.AnswerText" />
         </label>
-    </p>
-    <button type="submit">Добавить вопрос</button>
+        <div class="form-check">
+            <InputCheckbox id="answer3" class="form-check-input" @bind-Value="AnswerModel3.IsCorrect" />
+            <label class="form-check-label" for="answer3">Правильный</label>
+        </div>
+    </div>
+    <button class="btn btn-secondary" type="submit">Добавить вопрос</button>
 </EditForm>
 <br/>
-<button type="submit" @onclick="SubmitQuiz">Сохранить викторину</button>
-
+<button class="btn btn-primary" type="submit" @onclick="SubmitQuiz">Сохранить викторину</button>
 
 @code
 {

@@ -14,7 +14,6 @@ namespace UI.Models
         public string Name { get; set; }
 
         [Required]
-        [StringLength(20, ErrorMessage = "Название темы слишком длинное")]
         [MinLength(6, ErrorMessage = "Название темы слишком короткое")]
         public string Topic { get; set; }
 
