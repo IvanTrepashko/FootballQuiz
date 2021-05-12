@@ -161,5 +161,14 @@ namespace Services
 
             return detailedAnsweredQuiz;
         }
+
+        public List<QuizModel> GetByTags(string[] quizTags)
+        {
+            List<Quiz> quizzes = this.quizRepository.GetByTags(quizTags);
+
+            var quizModels = this.modelMapper.MapQuizzes(quizzes);
+
+            return quizModels;
+        }
     }
 }

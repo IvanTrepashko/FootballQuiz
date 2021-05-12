@@ -1,0 +1,61 @@
+﻿@page "/quizzesbytag"
+
+@using Models
+
+@inject HttpClient client
+@inject NavigationManager navigationManager
+
+<h3>Поиск по тегам</h3>
+    
+<EditForm Model="@TagsModel">
+    <label>
+        Введите теги (через ",")
+        <InputText @bind-Value="TagsModel.Tags" />
+    </label>
+    <button @onclick="LoadQuizzesByTags">Создать</button>
+</EditForm>
+    
+    @if (QuizModels != null)
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Название</th>
+                    <th>Тема</th>
+                    <th>Описание</th>
+                    <th>Теги</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var quiz in QuizModels)
+                {
+                    <tr>
+                        <td>@quiz.Name</td>
+                        <td>@quiz.Topic</td>
+                        <td>@quiz.Description</td>
+                        <td>@quiz.Tags</td>
+                        <td>
+                            <button class="btn btn-primary" @onclick="() => TakeSelectedQuiz(quiz)">Пройти</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+
+@code {
+    public TagsModel TagsModel { get; set; } = new TagsModel();
+    public List<QuizModel> QuizModels { get; set; }
+
+    public async void LoadQuizzesByTags()
+    {
+        QuizModels = await client.GetFromJsonAsync<List<QuizModel>>("https://localhost:44333/api/quiz/bytag?tags=" + TagsModel.Tags);
+        this.StateHasChanged();
+    }
+
+    public void TakeSelectedQuiz(QuizModel quiz)
+    {
+        navigationManager.NavigateTo("/takequiz/" + quiz.QuizID);
+    }
+}

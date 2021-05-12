@@ -32,5 +32,7 @@ namespace ServiceContracts
         List<AnsweredQuizModel> GetAnsweredByUserId(string userId);
 
         DetailedAnsweredQuiz GetDetailedInfo(Guid quizId);
+
+        List<QuizModel> GetByTags(string[] quizTags);
     }
 }

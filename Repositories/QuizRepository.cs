@@ -89,6 +89,19 @@ namespace Repositories
             return context.Quizes.Find(quizId);
         }
 
+        public List<Quiz> GetByTags(string[] quizTags)
+        {
+            var context = new ApplicationContext();
+            List<Quiz> quizzes = new List<Quiz>();
+
+            foreach (var quizTag in quizTags)
+            {
+                quizzes.AddRange(context.Quizes.Where(x => x.Tags.Contains(quizTag)));
+            }
+
+            return quizzes.Distinct().ToList();
+        }
+
         public Quiz GetRandomQuiz()
         {
             var context = new ApplicationContext();

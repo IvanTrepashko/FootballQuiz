@@ -31,6 +31,17 @@ namespace API.Controllers
             return new JsonResult(quizzes);
         }
 
+        [HttpGet]
+        [Route("bytag")]
+        public JsonResult GetByTags(string tags)
+        {
+            string[] quizTags = tags.Split(',', StringSplitOptions.RemoveEmptyEntries);
+
+            List<QuizModel> quizzes = this.quizService.GetByTags(quizTags);
+
+            return new JsonResult(quizzes);
+        }
+
         // GET api/<QuizController>/5
         [HttpGet("{quizId}")]
         public IActionResult Get(Guid quizId)
