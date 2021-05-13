@@ -29,6 +29,11 @@ namespace Services
 
         public async void AddAnsweredAsync(AnsweredQuizModel value)
         {
+            if (value is null)
+            {
+                throw new ArgumentNullException(nameof(value));
+            }
+
             AddAnswersToAnsweredQuizModel(value);
 
             AnsweredQuiz answeredQuiz = await this.modelMapper.MapAnsweredQuizModelAsync(value);

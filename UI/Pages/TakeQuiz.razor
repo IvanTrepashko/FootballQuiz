@@ -5,7 +5,20 @@
 @inject HttpClient client
 @inject AuthenticationStateProvider auth
 
-<h3>Случайная викторина</h3>
+    <style>
+        .answer {
+            padding-left: 10px;
+            padding-top: 10px;
+            display: block;
+            width: 450px;
+            height: 130px;
+            border: 1px solid black;
+            border-radius: 10px;
+        }
+    </style>
+
+<h3>Викторина</h3>
+
 
 <div>
     @if (AnsweredQuizModel is null)
@@ -28,11 +41,11 @@
                                     <InputRadio class="form-check-input" Name="@question.QuestionModel.Question" Value="answer.AnswerModelID" />
                                     <label class="form-check-label">@answer.AnswerText</label>
                                 </div>
-                                <br />
                                     }
                         </InputRadioGroup>
                     </div>
                 </div>
+                <br/>
             }
             <button class="btn btn-primary" type="submit">Ответить</button>
         </EditForm>
